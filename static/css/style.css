@@ -24,7 +24,7 @@ body {
 }
 
 .navbar-brand:hover img {
-    filter: brightness(1.1);
+    filter: brightness(1.2);
     transform: scale(1.05);
 }
 
@@ -35,25 +35,55 @@ body {
     overflow: hidden;
 }
 
-.hero-section .container {
-    position: relative;
-    z-index: 2;
-}
-
-.hero-bg {
-    background: #653119;
-}
-
 .hero-image {
     position: relative;
     z-index: 2;
 }
 
-.hero-logo {
-    width: 600px;
-    height: 600px;
-    object-fit: contain;
-    opacity: 0.9;
+/* Cards */
+.card {
+    transition: all 0.3s ease;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Buttons */
+.btn {
+    transition: all 0.3s ease;
+    border-radius: 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Service Icons */
+.service-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    font-size: 2rem;
+    transition: all 0.3s ease;
+}
+
+.service-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 25px rgba(0, 123, 255, 0.3);
 }
 
 /* Navigation */
@@ -90,49 +120,6 @@ body {
 
 .nav-link:hover::after {
     width: 100%;
-}
-
-/* Cards */
-.card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
-}
-
-.service-icon {
-    transition: all 0.3s ease;
-}
-
-.card:hover .service-icon {
-    transform: scale(1.1);
-}
-
-/* Buttons */
-.btn {
-    border-radius: 25px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.btn-warning {
-    background: linear-gradient(45deg, #ffc107, #ff8f00);
-    border: none;
-}
-
-.btn-warning:hover {
-    background: linear-gradient(45deg, #ff8f00, #ffc107);
 }
 
 /* Feature Items */
@@ -194,11 +181,6 @@ footer {
         height: 30px !important;
     }
     
-    .hero-logo {
-        width: 300px;
-        height: 300px;
-    }
-    
     .display-4 {
         font-size: 2.5rem;
     }
@@ -233,20 +215,17 @@ html {
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-    width: 8px;
+    display: none !important;
 }
 
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
+/* Hide scrollbar for Firefox */
+html {
+    scrollbar-width: none !important;
 }
 
-::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
+/* Hide scrollbar for IE/Edge */
+body {
+    -ms-overflow-style: none !important;
 }
 
 /* Text Selection */
@@ -270,32 +249,6 @@ html {
     }
 }
 
-/* Services Section */
-.services-section {
-    background: #58E5F7;
-}
-
-.black-card {
-    background: black;
-}
-
-.service-icon-large {
-    font-size: 5rem;
-}
-
-.white-icon {
-    color: white;
-}
-
-.white-text {
-    color: white;
-}
-
-/* Games Section */
-.games-section {
-    background: #653119;
-}
-
 /* Animations */
 @keyframes fadeIn {
     from {
@@ -304,6 +257,10 @@ html {
     to {
         opacity: 1;
     }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
 }
 
 .animate-fade-in {
