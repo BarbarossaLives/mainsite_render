@@ -4,7 +4,7 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-section d-flex align-items-center min-vh-100" style="background: #653119;">
+<section class="hero-section d-flex align-items-center min-vh-100 hero-bg">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
@@ -32,7 +32,7 @@
             </div>
             <div class="col-lg-6 text-center">
                 <div class="hero-image">
-                    <img src="{{ url_for('static', path='/images/logoTransparentNoWords.png') }}" alt="Barbarossa Lives Logo" style="width: 600px; height: 600px; object-fit: contain; opacity: 0.9;">
+                    <img src="{{ url_for('static', path='/images/logoTransparentNoWords.png') }}" alt="Barbarossa Lives Logo" class="hero-logo">
                 </div>
             </div>
         </div>
@@ -40,12 +40,12 @@
 </section>
 
 <!-- Services Section -->
-<section class="py-5 bg-light">
+<section class="services-section pt-0 pb-5">
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
                 <h2 class="display-5 fw-bold mb-3">Freelance and Custom Software</h2>
-                <p class="lead text-muted">
+                <p class="lead text-dark">
                     We offer comprehensive solutions tailored to meet your specific needs
                 </p>
             </div>
@@ -53,13 +53,13 @@
         
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
+                <div class="card h-100 border-0 shadow-sm black-card">
                     <div class="card-body text-center p-4">
                         <div class="service-icon mb-3">
-                            <i class="fa-solid fa-square-share-nodes" style="font-size: 5rem;"></i>
+                            <i class="fa-solid fa-square-share-nodes service-icon-large white-icon"></i>
                         </div>
-                        <h3 class="card-title">Custom Posting Software</h3>
-                        <p class="card-text text-muted">
+                        <h3 class="card-title white-text">Custom Posting Software</h3>
+                        <p class="card-text white-text">
                             I can create a custom software program that helps to post to any social media platforms. **
                         </p>
                     </div>
@@ -67,13 +67,13 @@
             </div>
             
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
+                <div class="card h-100 border-0 shadow-sm black-card">
                     <div class="card-body text-center p-4">
                         <div class="service-icon mb-3">
-                            <i class="fa-solid fa-file-invoice-dollar" style="font-size: 5rem;"></i>
+                            <i class="fa-solid fa-file-invoice-dollar service-icon-large white-icon"></i>
                         </div>
-                        <h3 class="card-title">Custom Finacial Tools</h3>
-                        <p class="card-text text-muted">
+                        <h3 class="card-title white-text">Custom Finacial Tools</h3>
+                        <p class="card-text white-text">
                             I can create tools that help you keep track pf finaces, expenses and imvoicing how you want to track it.
                         </p>
                     </div>
@@ -81,13 +81,13 @@
             </div>
             
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
+                <div class="card h-100 border-0 shadow-sm black-card">
                     <div class="card-body text-center p-4">
                         <div class="service-icon mb-3">
-                            <i class="fa-solid fa-list-check" style="font-size: 5rem;"></i>
+                            <i class="fa-solid fa-list-check service-icon-large white-icon"></i>
                         </div>
-                        <h3 class="card-title">Personalized Project Tracker</h3>
-                        <p class="card-text text-muted">
+                        <h3 class="card-title white-text">Personalized Project Tracker</h3>
+                        <p class="card-text white-text">
                             I can create a custom software solution for Project management, AI help in creating those projects and scheules and hjow it all fits into your daily schedule.
                         </p>
                     </div>
@@ -99,26 +99,26 @@
 </section>
 
 <!-- Games Section -->
-<section class="py-5 bg-light">
+<section class="games-section py-5">
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
                 <h2 class="display-5 fw-bold mb-3">Game Development</h2>
                 <p class="lead text-muted">
-                    Ai powered crypto currency simulator that allows you to trade and invest in crypto currency. It also has several seenarios to win the game.
+                    As a solo game developer I am creating the kinds of game I want to play.  I am also sharing how I play games and my thought process in creating them.
                 </p>
             </div>
         </div>
         
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
+                <div class="card h-100 border-0 shadow-sm black-card">
                     <div class="card-body text-center p-4">
                         <div class="service-icon mb-3">
                             <img src="">
                         </div>
-                        <h3 class="card-title">Crypto Currency Simulator</h3>
-                        <p class="card-text text-muted">
+                        <h3 class="card-title white-text">Crypto Currency Simulator</h3>
+                        <p class="card-text white-text">
                             Ai powered crypto currency simulator that allows you to trade and invest in crypto currency. It also has several seenarios to win the game.</p>
                             <a>GIT HUB REPO</a>
                     </div>
@@ -126,33 +126,33 @@
             </div>
             
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
+                <div class="card h-100 border-0 shadow-sm black-card">
                     <div class="card-body text-center p-4">
                         <div class="service-icon mb-3">
-                            <i class="fa-solid fa-file-invoice-dollar" style="font-size: 5rem;"></i>
+                            <i class="fa-solid fa-file-invoice-dollar service-icon-large white-icon"></i>
                         </div>
-                        <h3 class="card-title">Custom Finacial Tools</h3>
-                        <p class="card-text text-muted">
-                            I can create tools that help you keep track pf finaces, expenses and imvoicing how you want to track it.
+                        <h3 class="card-title white-text">Role Playing Dice Roller</h3>
+                        <p class="card-text white-text">
+                            I created a dice roller capable of working for many TTRPG games. It allows you to choose the amount and type of dice to roll along with a modifiersection.  
                         </p>
                     </div>
                 </div>
             </div>
             
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
+                <div class="card h-100 border-0 shadow-sm black-card">
                     <div class="card-body text-center p-4">
                         <div class="service-icon mb-3">
-                            <i class="fa-solid fa-list-check" style="font-size: 5rem;"></i>
+                            <i class="fa-solid fa-list-check service-icon-large white-icon"></i>
                         </div>
-                        <h3 class="card-title">Personalized Project Tracker</h3>
-                        <p class="card-text text-muted">
-                            I can create a custom software solution for Project management, AI help in creating those projects and scheules and hjow it all fits into your daily schedule.
+                        <h3 class="card-title white-text">Rule Beyton</h3>
+                        <p class="card-text white-text">
+                            Currently developing a 3d RPG game involing a working your way up the ladder of the local thieve's guild to become the master.  Procedural generation of dungeon and AI NPC's will be part of the game
                         </p>
                     </div>
                 </div>
             </div>
-            <p> ** Some social media platforms do not allow posting without a paid account</p>
+            
         </div>
     </div>
 </section>

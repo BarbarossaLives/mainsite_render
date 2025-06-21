@@ -17,6 +17,8 @@ body {
 
 /* Logo Styling */
 .navbar-brand img {
+    height: 40px;
+    width: auto;
     transition: all 0.3s ease;
     filter: brightness(1);
 }
@@ -28,20 +30,9 @@ body {
 
 /* Hero Section */
 .hero-section {
-    background-attachment: fixed;
+    background: #653119;
     position: relative;
     overflow: hidden;
-}
-
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 1;
 }
 
 .hero-section .container {
@@ -49,13 +40,20 @@ body {
     z-index: 2;
 }
 
-.hero-image {
-    animation: float 6s ease-in-out infinite;
+.hero-bg {
+    background: #653119;
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
+.hero-image {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-logo {
+    width: 600px;
+    height: 600px;
+    object-fit: contain;
+    opacity: 0.9;
 }
 
 /* Navigation */
@@ -96,14 +94,14 @@ body {
 
 /* Cards */
 .card {
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border-radius: 15px;
     overflow: hidden;
 }
 
 .card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
 }
 
 .service-icon {
@@ -125,7 +123,7 @@ body {
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 .btn-warning {
@@ -195,11 +193,24 @@ footer {
     .navbar-brand img {
         height: 30px !important;
     }
+    
+    .hero-logo {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .display-5 {
+        font-size: 2rem;
+    }
 }
 
 /* Smooth Scrolling */
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
 }
 
 /* Loading Animation */
@@ -210,6 +221,10 @@ html {
 }
 
 @keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
     to {
         opacity: 1;
         transform: translateY(0);
@@ -253,4 +268,44 @@ html {
     footer {
         display: none !important;
     }
+}
+
+/* Services Section */
+.services-section {
+    background: #58E5F7;
+}
+
+.black-card {
+    background: black;
+}
+
+.service-icon-large {
+    font-size: 5rem;
+}
+
+.white-icon {
+    color: white;
+}
+
+.white-text {
+    color: white;
+}
+
+/* Games Section */
+.games-section {
+    background: #653119;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out;
 } 
