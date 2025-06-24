@@ -18,6 +18,25 @@
         "live data"
       ],
       "published": true
+    },
+    {
+      "id": 2,
+      "title": "Features of the Project manager.",
+      "slug": "features-of-the-project-manager",
+      "excerpt": "Introducing a powerful, intuitive project management solution designed to transform how teams collaborate, track, and accomplish their goals. ",
+      "content": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <title>Project Manager: Streamline Your Workflow</title>\r\n    <style>\r\n        body {\r\n            font-family: Arial, sans-serif;\r\n            line-height: 1.6;\r\n            max-width: 800px;\r\n            margin: 0 auto;\r\n            padding: 20px;\r\n        }\r\n        h1, h2 {\r\n            color: #333;\r\n        }\r\n        .features {\r\n            background-color: #f4f4f4;\r\n            padding: 20px;\r\n            border-radius: 5px;\r\n        }\r\n        .feature-list {\r\n            list-style-type: none;\r\n            padding: 0;\r\n        }\r\n        .feature-list li {\r\n            margin-bottom: 10px;\r\n            padding-left: 20px;\r\n            position: relative;\r\n        }\r\n        .feature-list li:before {\r\n            content: \"\u2713\";\r\n            color: #4CAF50;\r\n            position: absolute;\r\n            left: 0;\r\n            font-weight: bold;\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n    <h1>Project Manager: Your Ultimate Workflow Companion</h1>\r\n    \r\n    <p>Introducing a powerful, intuitive project management solution designed to transform how teams collaborate, track, and accomplish their goals. Our platform bridges the gap between complexity and simplicity, providing a seamless experience for professionals across industries.</p>\r\n    \r\n    <div class=\"features\">\r\n        <h2>Product Features</h2>\r\n        <ul class=\"feature-list\">\r\n            <h3>Project Management</h3>\r\n            <li>Create and manage multiple projects with ease</li>\r\n            <li>Customize project details and metadata</li>\r\n            <li>Track project progress in real-time</li>\r\n            \r\n            <h3>Task Tracking</h3>\r\n            <li>Create detailed, assignable tasks</li>\r\n            <li>Set priorities and deadlines</li>\r\n            <li>Monitor task completion and status</li>\r\n            \r\n            <h3>User Experience</h3>\r\n            <li>Responsive, mobile-friendly design</li>\r\n            <li>Intuitive user interface</li>\r\n            <li>Quick and easy navigation</li>\r\n            \r\n            <h3>Collaboration</h3>\r\n            <li>User authentication and roles</li>\r\n            <li>Team member assignment</li>\r\n            <li>Communication and comment tracking</li>\r\n            \r\n            <h3>Technical Capabilities</h3>\r\n            <li>Scalable microservices architecture</li>\r\n            <li>Secure JWT authentication</li>\r\n            <li>Real-time updates and synchronization</li>\r\n        </ul>\r\n    </div>\r\n    \r\n    <p>Designed for teams and individuals who demand efficiency, flexibility, and clarity in their workflow management.</p>\r\n</body>\r\n</html>",
+      "author": "Barbarossa Lives",
+      "date": "2025-06-24",
+      "category": "Development",
+      "read_time": "5 min read",
+      "image": "ProjectTrackerTimer.png",
+      "tags": [
+        "devlog",
+        "python",
+        "HTML",
+        "CSS"
+      ],
+      "published": true
     }
   ],
   "categories": [
@@ -56,6 +75,9 @@
     "game",
     "python",
     "web",
-    "live data"
+    "live data",
+    "devlog",
+    "HTML",
+    "CSS"
   ]
 }

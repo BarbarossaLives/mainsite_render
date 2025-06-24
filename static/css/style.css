@@ -225,4 +225,86 @@ body {
     footer {
         display: none !important;
     }
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #181a1b !important;
+    color: #f1f1f1 !important;
+}
+body.dark-mode .navbar,
+body.dark-mode footer {
+    background-color: #23272b !important;
+    color: #f1f1f1 !important;
+}
+body.dark-mode .navbar .navbar-brand,
+body.dark-mode .navbar .nav-link {
+    color: #f1f1f1 !important;
+}
+body.dark-mode .navbar .nav-link.active,
+body.dark-mode .navbar .nav-link:hover {
+    color: #58E5F7 !important;
+}
+body.dark-mode .card {
+    background-color: #23272b !important;
+    color: #f1f1f1 !important;
+    border-color: #23272b !important;
+}
+body.dark-mode .card-title,
+body.dark-mode .card-text,
+body.dark-mode .text-dark {
+    color: #f1f1f1 !important;
+}
+body.dark-mode .btn {
+    background-color: #23272b;
+    color: #f1f1f1;
+    border-color: #58E5F7;
+}
+body.dark-mode .btn:hover {
+    background-color: #58E5F7;
+    color: #23272b;
+    border-color: #58E5F7;
+}
+body.dark-mode .bg-dark {
+    background-color: #181a1b !important;
+}
+body.dark-mode .bg-light {
+    background-color: #23272b !important;
+    color: #f1f1f1 !important;
+}
+body.dark-mode .text-dark {
+    color: #f1f1f1 !important;
+}
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+    background-color: #23272b !important;
+    color: #f1f1f1 !important;
+    border-color: #444 !important;
+}
+body.dark-mode input,
+body.dark-mode textarea {
+    background-color: #23272b !important;
+    color: #f1f1f1 !important;
+}
+body.dark-mode .badge.bg-primary {
+    background-color: #58E5F7 !important;
+    color: #23272b !important;
+}
+body.dark-mode .badge.bg-success {
+    background-color: #27ae60 !important;
+    color: #fff !important;
+}
+body.dark-mode .badge.bg-warning {
+    background-color: #ffc107 !important;
+    color: #23272b !important;
+}
+body.dark-mode .badge.bg-secondary {
+    background-color: #888 !important;
+    color: #23272b !important;
+}
+body.dark-mode .social-links a {
+    color: #f1f1f1 !important;
+}
+body.dark-mode .social-links a:hover {
+    color: #58E5F7 !important;
 } 

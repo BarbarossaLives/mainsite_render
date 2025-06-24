@@ -200,6 +200,34 @@ document.addEventListener('DOMContentLoaded', function() {
     // Console welcome message
     console.log('%cWelcome to Your Business Website! 🚀', 'color: #ffc107; font-size: 20px; font-weight: bold;');
     console.log('%cBuilt with FastAPI and Jinja2', 'color: #667eea; font-size: 14px;');
+
+    // Dark mode toggle logic
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+    function setDarkMode(enabled) {
+        if (enabled) {
+            document.body.classList.add('dark-mode');
+            if (darkModeIcon) {
+                darkModeIcon.classList.remove('fa-moon');
+                darkModeIcon.classList.add('fa-sun');
+            }
+        } else {
+            document.body.classList.remove('dark-mode');
+            if (darkModeIcon) {
+                darkModeIcon.classList.remove('fa-sun');
+                darkModeIcon.classList.add('fa-moon');
+            }
+        }
+    }
+    if (darkModeToggle && darkModeIcon) {
+        const darkPref = localStorage.getItem('darkMode') === 'true';
+        setDarkMode(darkPref);
+        darkModeToggle.addEventListener('click', () => {
+            const enabled = !document.body.classList.contains('dark-mode');
+            setDarkMode(enabled);
+            localStorage.setItem('darkMode', enabled);
+        });
+    }
 });
 
 // Utility functions
