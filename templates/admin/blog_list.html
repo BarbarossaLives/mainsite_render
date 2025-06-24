@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}Blog Admin - Barbarossa Lives Game Studio{% endblock %}
+
+{% block content %}
+<!-- Admin Header -->
+<section class="py-4" style="background: linear-gradient(135deg, #653119 0%, #8B4513 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="h2 text-white mb-0">Blog Management</h1>
+                <p class="text-white-50 mb-0">Manage your blog posts and content</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <div class="btn-group" role="group">
+                    <a href="/admin/blog/new" class="btn btn-light">
+                        <i class="fas fa-plus me-2"></i>New Post
+                    </a>
+                    <a href="/admin/logout" class="btn btn-outline-light">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Posts Table -->
+<section class="py-4">
+    <div class="container">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">All Blog Posts</h5>
+            </div>
+            <div class="card-body p-0">
+                {% if blog_posts %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for post in blog_posts %}
+                            <tr>
+                                <td class="align-middle">
+                                    <span class="badge bg-secondary">{{ post.id }}</span>
+                                </td>
+                                <td class="align-middle">
+                                    <div>
+                                        <strong>{{ post.title }}</strong>
+                                        <br>
+                                        <small class="text-muted">{{ post.excerpt[:60] }}...</small>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="badge bg-primary">{{ post.category }}</span>
+                                </td>
+                                <td class="align-middle">
+                                    <small>{{ post.date }}</small>
+                                </td>
+                                <td class="align-middle">
+                                    {% if post.published %}
+                                    <span class="badge bg-success">Published</span>
+                                    {% else %}
+                                    <span class="badge bg-warning">Draft</span>
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/blog/{{ post.id }}" class="btn btn-outline-primary" target="_blank" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="/admin/blog/{{ post.id }}/edit" class="btn btn-outline-secondary" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-outline-danger" 
+                                                onclick="confirmDelete({{ post.id }}, '{{ post.title }}')" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No blog posts yet</h5>
+                    <p class="text-muted">Create your first blog post to get started!</p>
+                    <a href="/admin/blog/new" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Create First Post
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Stats -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-newspaper fa-2x text-primary mb-2"></i>
+                        <h4 class="mb-1">{{ blog_posts|length }}</h4>
+                        <small class="text-muted">Total Posts</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                        <h4 class="mb-1">{{ blog_posts|selectattr('published', 'equalto', true)|list|length }}</h4>
+                        <small class="text-muted">Published</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                        <h4 class="mb-1">{{ blog_posts|selectattr('published', 'equalto', false)|list|length }}</h4>
+                        <small class="text-muted">Drafts</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-tags fa-2x text-info mb-2"></i>
+                        <h4 class="mb-1">{{ categories|length }}</h4>
+                        <small class="text-muted">Categories</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function confirmDelete(postId, title) {
+    if (confirm(`Are you sure you want to delete "${title}"? This action cannot be undone.`)) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/admin/blog/${postId}/delete`;
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+{% endblock %} 

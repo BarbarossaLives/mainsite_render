@@ -1,8 +1,14 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException, Form, File, UploadFile, Depends, status
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import uvicorn
+import json
+import os
+import secrets
+from datetime import datetime
+from typing import Optional
 
 app = FastAPI(title="Business Website", version="1.0.0")
 
@@ -11,6 +17,93 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Templates
 templates = Jinja2Templates(directory="templates")
+
+# Security
+security = HTTPBasic()
+
+# Admin credentials (in production, use environment variables)
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "barbarossa2024")
+
+# Session storage (in production, use Redis or database)
+admin_sessions = {}
+
+def verify_admin_credentials(credentials: HTTPBasicCredentials = Depends(security)):
+    """Verify admin credentials"""
+    is_username_correct = secrets.compare_digest(credentials.username, ADMIN_USERNAME)
+    is_password_correct = secrets.compare_digest(credentials.password, ADMIN_PASSWORD)
+    
+    if not (is_username_correct and is_password_correct):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    return credentials.username
+
+def get_session_token(request: Request) -> Optional[str]:
+    """Get session token from cookies"""
+    return request.cookies.get("admin_session")
+
+def verify_admin_session(request: Request):
+    """Verify admin session is valid"""
+    session_token = get_session_token(request)
+    if not session_token or session_token not in admin_sessions:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Admin session required",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    return session_token
+
+def create_admin_session(username: str) -> str:
+    """Create a new admin session"""
+    session_token = secrets.token_urlsafe(32)
+    admin_sessions[session_token] = {
+        "username": username,
+        "created_at": datetime.now(),
+        "last_activity": datetime.now()
+    }
+    return session_token
+
+def load_blog_posts():
+    """Load blog posts from JSON file"""
+    try:
+        with open("data/blog_posts.json", "r") as f:
+            data = json.load(f)
+            # Convert to dictionary with ID as key for easier lookup
+            posts_dict = {post["id"]: post for post in data["posts"] if post.get("published", True)}
+            return posts_dict, data.get("categories", []), data.get("tags", [])
+    except FileNotFoundError:
+        print("Warning: blog_posts.json not found. Using empty blog data.")
+        return {}, [], []
+    except json.JSONDecodeError:
+        print("Warning: Invalid JSON in blog_posts.json. Using empty blog data.")
+        return {}, [], []
+
+def save_blog_data(posts_dict, categories, tags):
+    """Save blog data to JSON file"""
+    os.makedirs("data", exist_ok=True)
+    data = {
+        "posts": list(posts_dict.values()),
+        "categories": categories,
+        "tags": tags
+    }
+    with open("data/blog_posts.json", "w") as f:
+        json.dump(data, f, indent=2)
+
+def get_next_post_id(posts_dict):
+    """Get the next available post ID"""
+    if not posts_dict:
+        return 1
+    return max(posts_dict.keys()) + 1
+
+def create_slug(title: str) -> str:
+    """Create a URL-friendly slug from title"""
+    return title.lower().replace(' ', '-').replace(':', '').replace('!', '').replace('?', '').replace('.', '')
+
+# Load blog data
+BLOG_POSTS, BLOG_CATEGORIES, BLOG_TAGS = load_blog_posts()
 
 @app.get("/favicon.ico")
 async def favicon():
@@ -31,6 +124,263 @@ async def about(request: Request):
 async def contact(request: Request):
     """Contact page route"""
     return templates.TemplateResponse("contact.html", {"request": request})
+
+@app.get("/blog", response_class=HTMLResponse)
+async def blog(request: Request):
+    """Blog page route"""
+    # Convert dictionary to list for template
+    blog_posts = list(BLOG_POSTS.values())
+    
+    return templates.TemplateResponse("blog.html", {
+        "request": request,
+        "blog_posts": blog_posts,
+        "categories": BLOG_CATEGORIES,
+        "tags": BLOG_TAGS
+    })
+
+@app.get("/blog/{post_id}", response_class=HTMLResponse)
+async def blog_post(request: Request, post_id: int):
+    """Individual blog post route"""
+    if post_id not in BLOG_POSTS:
+        raise HTTPException(status_code=404, detail="Blog post not found")
+    
+    post = BLOG_POSTS[post_id]
+    
+    # Get related posts (excluding current post)
+    related_posts = [p for p in BLOG_POSTS.values() if p["id"] != post_id][:3]
+    
+    return templates.TemplateResponse("blog_post.html", {
+        "request": request,
+        "post": post,
+        "related_posts": related_posts
+    })
+
+@app.get("/blog/category/{category_slug}", response_class=HTMLResponse)
+async def blog_category(request: Request, category_slug: str):
+    """Blog posts by category"""
+    # Find category
+    category = next((cat for cat in BLOG_CATEGORIES if cat["slug"] == category_slug), None)
+    if not category:
+        raise HTTPException(status_code=404, detail="Category not found")
+    
+    # Filter posts by category
+    category_posts = [post for post in BLOG_POSTS.values() if post["category"] == category["name"]]
+    
+    return templates.TemplateResponse("blog.html", {
+        "request": request,
+        "blog_posts": category_posts,
+        "categories": BLOG_CATEGORIES,
+        "tags": BLOG_TAGS,
+        "current_category": category
+    })
+
+@app.get("/blog/tag/{tag}", response_class=HTMLResponse)
+async def blog_tag(request: Request, tag: str):
+    """Blog posts by tag"""
+    if tag not in BLOG_TAGS:
+        raise HTTPException(status_code=404, detail="Tag not found")
+    
+    # Filter posts by tag
+    tag_posts = [post for post in BLOG_POSTS.values() if tag in post.get("tags", [])]
+    
+    return templates.TemplateResponse("blog.html", {
+        "request": request,
+        "blog_posts": tag_posts,
+        "categories": BLOG_CATEGORIES,
+        "tags": BLOG_TAGS,
+        "current_tag": tag
+    })
+
+# Admin authentication route
+@app.get("/admin/login", response_class=HTMLResponse)
+async def admin_login_page(request: Request):
+    """Admin login page"""
+    return templates.TemplateResponse("admin/login.html", {"request": request})
+
+@app.post("/admin/login")
+async def admin_login(
+    request: Request,
+    username: str = Form(...),
+    password: str = Form(...)
+):
+    """Handle admin login"""
+    if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+        session_token = create_admin_session(username)
+        response = RedirectResponse(url="/admin", status_code=303)
+        response.set_cookie(
+            key="admin_session",
+            value=session_token,
+            httponly=True,
+            secure=False,  # Set to True in production with HTTPS
+            samesite="lax",
+            max_age=3600  # 1 hour
+        )
+        return response
+    else:
+        return templates.TemplateResponse("admin/login.html", {
+            "request": request,
+            "error": "Invalid username or password"
+        })
+
+@app.get("/admin/logout")
+async def admin_logout(request: Request):
+    """Handle admin logout"""
+    session_token = get_session_token(request)
+    if session_token in admin_sessions:
+        del admin_sessions[session_token]
+    
+    response = RedirectResponse(url="/admin/login", status_code=303)
+    response.delete_cookie("admin_session")
+    return response
+
+# Admin routes (protected)
+@app.get("/admin", response_class=HTMLResponse)
+async def admin_dashboard(request: Request, session_token: str = Depends(verify_admin_session)):
+    """Admin dashboard overview"""
+    blog_posts = list(BLOG_POSTS.values())
+    return templates.TemplateResponse("admin/dashboard.html", {
+        "request": request,
+        "blog_posts": blog_posts,
+        "categories": BLOG_CATEGORIES,
+        "tags": BLOG_TAGS
+    })
+
+@app.get("/admin/blog", response_class=HTMLResponse)
+async def admin_blog_list(request: Request, session_token: str = Depends(verify_admin_session)):
+    """Admin blog listing page"""
+    blog_posts = list(BLOG_POSTS.values())
+    return templates.TemplateResponse("admin/blog_list.html", {
+        "request": request,
+        "blog_posts": blog_posts,
+        "categories": BLOG_CATEGORIES
+    })
+
+@app.get("/admin/blog/new", response_class=HTMLResponse)
+async def admin_new_post(request: Request, session_token: str = Depends(verify_admin_session)):
+    """New blog post form"""
+    return templates.TemplateResponse("admin/blog_form.html", {
+        "request": request,
+        "post": None,
+        "categories": BLOG_CATEGORIES,
+        "tags": BLOG_TAGS
+    })
+
+@app.post("/admin/blog/new")
+async def admin_create_post(
+    request: Request,
+    session_token: str = Depends(verify_admin_session),
+    title: str = Form(...),
+    excerpt: str = Form(...),
+    content: str = Form(...),
+    category: str = Form(...),
+    image: str = Form(default="game_tool_full.png"),
+    read_time: str = Form(default="5 min read"),
+    tags: str = Form(default=""),
+    published: bool = Form(default=True)
+):
+    """Create new blog post"""
+    global BLOG_POSTS, BLOG_TAGS
+    
+    # Parse tags
+    tag_list = [tag.strip() for tag in tags.split(',') if tag.strip()]
+    
+    # Add new tags to global list
+    for tag in tag_list:
+        if tag not in BLOG_TAGS:
+            BLOG_TAGS.append(tag)
+    
+    # Create new post
+    new_post = {
+        "id": get_next_post_id(BLOG_POSTS),
+        "title": title,
+        "slug": create_slug(title),
+        "excerpt": excerpt,
+        "content": content,
+        "author": "Barbarossa Lives",
+        "date": datetime.now().strftime("%Y-%m-%d"),
+        "category": category,
+        "read_time": read_time,
+        "image": image,
+        "tags": tag_list,
+        "published": published
+    }
+    
+    BLOG_POSTS[new_post["id"]] = new_post
+    save_blog_data(BLOG_POSTS, BLOG_CATEGORIES, BLOG_TAGS)
+    
+    return RedirectResponse(url="/admin/blog", status_code=303)
+
+@app.get("/admin/blog/{post_id}/edit", response_class=HTMLResponse)
+async def admin_edit_post(request: Request, post_id: int, session_token: str = Depends(verify_admin_session)):
+    """Edit blog post form"""
+    if post_id not in BLOG_POSTS:
+        raise HTTPException(status_code=404, detail="Blog post not found")
+    
+    post = BLOG_POSTS[post_id]
+    return templates.TemplateResponse("admin/blog_form.html", {
+        "request": request,
+        "post": post,
+        "categories": BLOG_CATEGORIES,
+        "tags": BLOG_TAGS
+    })
+
+@app.post("/admin/blog/{post_id}/edit")
+async def admin_update_post(
+    request: Request,
+    post_id: int,
+    session_token: str = Depends(verify_admin_session),
+    title: str = Form(...),
+    excerpt: str = Form(...),
+    content: str = Form(...),
+    category: str = Form(...),
+    image: str = Form(...),
+    read_time: str = Form(...),
+    tags: str = Form(...),
+    published: bool = Form(default=True)
+):
+    """Update blog post"""
+    global BLOG_POSTS, BLOG_TAGS
+    
+    if post_id not in BLOG_POSTS:
+        raise HTTPException(status_code=404, detail="Blog post not found")
+    
+    # Parse tags
+    tag_list = [tag.strip() for tag in tags.split(',') if tag.strip()]
+    
+    # Add new tags to global list
+    for tag in tag_list:
+        if tag not in BLOG_TAGS:
+            BLOG_TAGS.append(tag)
+    
+    # Update post
+    BLOG_POSTS[post_id].update({
+        "title": title,
+        "slug": create_slug(title),
+        "excerpt": excerpt,
+        "content": content,
+        "category": category,
+        "image": image,
+        "read_time": read_time,
+        "tags": tag_list,
+        "published": published
+    })
+    
+    save_blog_data(BLOG_POSTS, BLOG_CATEGORIES, BLOG_TAGS)
+    
+    return RedirectResponse(url="/admin/blog", status_code=303)
+
+@app.post("/admin/blog/{post_id}/delete")
+async def admin_delete_post(request: Request, post_id: int, session_token: str = Depends(verify_admin_session)):
+    """Delete blog post"""
+    global BLOG_POSTS
+    
+    if post_id not in BLOG_POSTS:
+        raise HTTPException(status_code=404, detail="Blog post not found")
+    
+    del BLOG_POSTS[post_id]
+    save_blog_data(BLOG_POSTS, BLOG_CATEGORIES, BLOG_TAGS)
+    
+    return RedirectResponse(url="/admin/blog", status_code=303)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True) 
