@@ -113,7 +113,9 @@ async def favicon():
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     """Home page route"""
-    return templates.TemplateResponse("index.html", {"request": request})
+    # Get the latest 3 published blog posts, sorted by date descending
+    blog_posts = sorted(BLOG_POSTS.values(), key=lambda p: p["date"], reverse=True)[:3]
+    return templates.TemplateResponse("index.html", {"request": request, "blog_posts": blog_posts})
 
 @app.get("/about", response_class=HTMLResponse)
 async def about(request: Request):
