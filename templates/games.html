@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Games - Barbarossa Lives{% endblock %}
+
+{% block content %}
+<!-- Games Hero Section -->
+<section class="py-5" style="background: #653119;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-4 text-white">Our Games</h1>
+                <p class="lead text-white">
+                    Explore the games and interactive projects created by Barbarossa Lives Game Studio.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Games Showcase Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm" style="background: black;">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <img src="{{ url_for('static', path='/images/CryptoSim.png') }}" alt="CryptoSim" style="width: 320px; height: 180px; object-fit: contain;">
+                        </div>
+                        <h3 class="card-title" style="color: white;">Crypto Currency Simulator</h3>
+                        <p class="card-text" style="color: white;">AI powered crypto currency simulator for trading and investment scenarios.</p>
+                        <a href="https://github.com/BarbarossaLives/CryptoCurrencySim" target="_blank" class="btn btn-outline-light btn-sm">GitHub Repo</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm" style="background: black;">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <img src="{{ url_for('static', path='/images/DiceRoller.png') }}" alt="Dice Roller" style="width: 320px; height: 180px; object-fit: contain;">
+                        </div>
+                        <h3 class="card-title" style="color: white;">Role Playing Dice Roller</h3>
+                        <p class="card-text" style="color: white;">A dice roller for TTRPGs, supporting custom dice and modifiers.</p>
+                        <a href="https://github.com/BarbarossaLives/DiceRollerTool" target="_blank" class="btn btn-outline-light btn-sm">GitHub Repo</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm" style="background: black;">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <img src="{{ url_for('static', path='/images/RuleBeyton_1.png') }}" alt="Rule Beyton" style="width: 320px; height: 180px; object-fit: contain;">
+                        </div>
+                        <h3 class="card-title" style="color: white;">Rule Beyton</h3>
+                        <p class="card-text" style="color: white;">A 3D RPG game in development, climb the ranks of the thieves' guild.</p>
+                        <a href="/games/rule-beyton" class="btn btn-outline-light btn-sm">Project Page</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Contact CTA Section -->
+<section class="py-5 bg-dark">
+    <div class="container text-center">
+        <h2 class="display-6 fw-bold mb-3 text-white">Interested in Collaborating?</h2>
+        <p class="lead text-light mb-4">Contact us to discuss your game idea or project needs.</p>
+        <a href="/contact" class="btn btn-warning btn-lg px-5">Contact Us</a>
+    </div>
+</section>
+{% endblock %} 

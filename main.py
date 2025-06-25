@@ -127,6 +127,21 @@ async def contact(request: Request):
     """Contact page route"""
     return templates.TemplateResponse("contact.html", {"request": request})
 
+@app.get("/games", response_class=HTMLResponse)
+async def games(request: Request):
+    """Games page route"""
+    return templates.TemplateResponse("games.html", {"request": request})
+
+@app.get("/games/rule-beyton", response_class=HTMLResponse)
+async def rule_beyton(request: Request):
+    """Rule Beyton project page route"""
+    return templates.TemplateResponse("rule_beyton.html", {"request": request})
+
+@app.get("/business-solutions", response_class=HTMLResponse)
+async def business_solutions(request: Request):
+    """Business Solutions page route"""
+    return templates.TemplateResponse("business_solutions.html", {"request": request})
+
 @app.get("/blog", response_class=HTMLResponse)
 async def blog(request: Request):
     """Blog page route"""
