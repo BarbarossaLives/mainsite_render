@@ -37,6 +37,24 @@
         "CSS"
       ],
       "published": true
+    },
+    {
+      "id": 3,
+      "title": "Comparing the Python Engines",
+      "slug": "comparing-the-python-engines",
+      "excerpt": "Python is not know for its ability to make 3D games.  But as a Python developer I want to explore the options that are out there. Godot is probably the most used option,even though it is technically ",
+      "content": "<h2> 3D with Python </h2>\r\n<p>Python is not know for its ability to make 3D games.  But as a Python developer I want to explore the options that are out there. Godot is probably the most used option,even though it is technically not Python. Gd Script is the scripting languse that was written specifically for Godot, however is follow all the basic rules of python for syntax, for and while loops, variable declaration(or not) and other systems that a python programmer would be intimately familiar with. These images were made in blender with some great sets of models from KayBits over on itch.io, The pack does have eveerything I needed but was able to make a table work as a door using boleans and it turned out great.  UPBGE rendered this just fine and after some searching I was able to get a simple capsule moving around.  The method of registering the scripts and using them has changes over the versions and the docs for the script has not.)  </p>\r\n\t\r\n<img scr=\"Tavern_2_Blender.png\">\r\n\t\r\n<p> In UPBGE the collision's just worked because the physics engine is already to go.  Just had to make sure the player capsule had a character body physic's type on it.  Godot imported the .GLB files without issue, however you need to go through each item to make sure the collision body is being generated. While this is a pain in the ass when first bringing in the models, the fact that you can set the mesh type would probably create great advantages in the speed the program can handle later on.  Ursina was a bit more difficult but also a bit more specific.  Ursina can simple create its best guess at a mesh by adding the collider syntax to the instance of the model, but the result can we a bit unreliable during game play and it is essentially duplicationing the entire mush to act as the collision item. This quickly gets your game to do a lot of calculations it just doesn't need to be doing.  The best oprioon is you the artist to create a very simplified version of the meshes and import it and make that the collision mesh.  If i threw around to  many term or didn't technically use them in the right way I apologize, but I think most people interrested in my work will be able to follow along. </p>\r\n\r\n<img scr=\"Tavern_3_Blender.png>\r\n\r\n<p>I will be posting more of these tests from the differnt engines and share my experiances as I work through my projects.  Support me over at Ko-Fi or where ever you are seeing the onformation simply by sharing</p>\r\n\r\n<Next Up:  some in engine renders and the code it took, if any!!</p>?",
+      "author": "Barbarossa Lives",
+      "date": "2025-07-04",
+      "category": "Game Development",
+      "read_time": "5 min read",
+      "image": "Tavern_1_Blender.png",
+      "tags": [
+        "gameArt",
+        "python",
+        "blender"
+      ],
+      "published": true
     }
   ],
   "categories": [
@@ -78,6 +96,8 @@
     "live data",
     "devlog",
     "HTML",
-    "CSS"
+    "CSS",
+    "gameArt",
+    "blender"
   ]
 }
