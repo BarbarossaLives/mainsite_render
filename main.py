@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, HTTPException, Form, File, UploadFile, Depends, status
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse, JSONResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import uvicorn
 import json
@@ -9,6 +9,18 @@ import os
 import secrets
 from datetime import datetime
 from typing import Optional
+import aiosmtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import logging
+
+# Load environment variables from .env file if it exists
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    # dotenv not installed, skip loading .env file
+    pass
 
 app = FastAPI(title="Business Website", version="1.0.0")
 
@@ -24,6 +36,17 @@ security = HTTPBasic()
 # Admin credentials (in production, use environment variables)
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "barbarossa2024")
+
+# Email configuration
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")  # Default to Gmail SMTP
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_USERNAME = os.getenv("EMAIL_USERNAME", "")  # Your email username
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD", "")  # Your email password or app password
+EMAIL_FROM = os.getenv("EMAIL_FROM", "noreply@yourdomain.com")
+EMAIL_TO = "montebruce@proton.me"  # Where contact form messages will be sent
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 # Session storage (in production, use Redis or database)
 admin_sessions = {}
@@ -126,6 +149,88 @@ async def about(request: Request):
 async def contact(request: Request):
     """Contact page route"""
     return templates.TemplateResponse("contact.html", {"request": request})
+
+async def send_email(subject: str, body: str, to_email: str = EMAIL_TO):
+    """Send email using SMTP"""
+    try:
+        # Create message
+        message = MIMEMultipart()
+        message["From"] = EMAIL_FROM
+        message["To"] = to_email
+        message["Subject"] = subject
+
+        # Add body to email
+        message.attach(MIMEText(body, "html"))
+
+        # Send email
+        await aiosmtplib.send(
+            message,
+            hostname=EMAIL_HOST,
+            port=EMAIL_PORT,
+            start_tls=True,
+            username=EMAIL_USERNAME,
+            password=EMAIL_PASSWORD,
+        )
+        return True
+    except Exception as e:
+        logging.error(f"Failed to send email: {str(e)}")
+        return False
+
+@app.post("/contact/submit")
+async def submit_contact_form(
+    firstName: str = Form(...),
+    lastName: str = Form(...),
+    email: str = Form(...),
+    phone: str = Form(default=""),
+    company: str = Form(default=""),
+    subject: str = Form(...),
+    message: str = Form(...)
+):
+    """Handle contact form submission"""
+    try:
+        # Create email subject
+        email_subject = f"Contact Form: {subject}"
+
+        # Create email body
+        email_body = f"""
+        <html>
+        <body>
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> {firstName} {lastName}</p>
+            <p><strong>Email:</strong> {email}</p>
+            <p><strong>Phone:</strong> {phone if phone else 'Not provided'}</p>
+            <p><strong>Company:</strong> {company if company else 'Not provided'}</p>
+            <p><strong>Subject:</strong> {subject}</p>
+            <p><strong>Message:</strong></p>
+            <div style="background-color: #f5f5f5; padding: 15px; border-left: 4px solid #007bff;">
+                {message.replace('\n', '<br>')}
+            </div>
+            <hr>
+            <p><small>This message was sent from the contact form on your website.</small></p>
+        </body>
+        </html>
+        """
+
+        # Send email
+        email_sent = await send_email(email_subject, email_body)
+
+        if email_sent:
+            return JSONResponse(
+                status_code=200,
+                content={"success": True, "message": "Thank you for your message! We'll get back to you soon."}
+            )
+        else:
+            return JSONResponse(
+                status_code=500,
+                content={"success": False, "message": "Sorry, there was an error sending your message. Please try again later."}
+            )
+
+    except Exception as e:
+        logging.error(f"Contact form error: {str(e)}")
+        return JSONResponse(
+            status_code=500,
+            content={"success": False, "message": "Sorry, there was an error processing your request. Please try again later."}
+        )
 
 @app.get("/games", response_class=HTMLResponse)
 async def games(request: Request):

@@ -4,7 +4,7 @@
 
 {% block content %}
 <!-- Contact Hero Section -->
-<section class="py-5 bg-light">
+<section class="py-5 bg-light" style="background: #653119;">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
@@ -135,18 +135,71 @@
 
 {% block extra_js %}
 <script>
-document.getElementById('contactForm').addEventListener('submit', function(e) {
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    
+
     // Get form data
     const formData = new FormData(this);
-    const data = Object.fromEntries(formData);
-    
-    // Show success message (in a real app, you'd send this to your backend)
-    alert('Thank you for your message! We\'ll get back to you soon.');
-    
-    // Reset form
-    this.reset();
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.innerHTML;
+
+    // Show loading state
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+
+    try {
+        // Send form data to backend
+        const response = await fetch('/contact/submit', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            // Show success message
+            showMessage(result.message, 'success');
+            // Reset form
+            this.reset();
+        } else {
+            // Show error message
+            showMessage(result.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showMessage('Sorry, there was an error sending your message. Please try again later.', 'error');
+    } finally {
+        // Reset button state
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonText;
+    }
 });
+
+function showMessage(message, type) {
+    // Remove any existing messages
+    const existingMessage = document.querySelector('.contact-message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+
+    // Create message element
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} contact-message mt-3`;
+    messageDiv.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+        ${message}
+    `;
+
+    // Add message after the form
+    const form = document.getElementById('contactForm');
+    form.parentNode.insertBefore(messageDiv, form.nextSibling);
+
+    // Auto-remove success messages after 5 seconds
+    if (type === 'success') {
+        setTimeout(() => {
+            messageDiv.remove();
+        }, 5000);
+    }
+}
 </script>
-{% endblock %} 
+{% endblock %}
