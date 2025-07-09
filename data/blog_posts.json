@@ -55,6 +55,25 @@
         "blender"
       ],
       "published": true
+    },
+    {
+      "id": 4,
+      "title": "Building My Business Suite \u2014 One Tool at a Time",
+      "slug": "building-my-business-suite-\u2014-one-tool-at-a-time",
+      "excerpt": "Instead of rushing, I\u2019ve taken a step-by-step approach: first outlining the basic GUI structure and layout, then gradually adding functionality piece by piece. ",
+      "content": "<p>\r\nTo deepen my understanding of <strong>FastAPI</strong> and the full development process, I\u2019ve started building a custom <strong>Business Suite</strong>. This includes a <strong>Project and Event Tracker</strong>, along with a <strong>Posting Tool</strong> that lets you share a link, write a simple post, and attach an image \u2014 all while publishing to multiple social media platforms at once.\r\n</p>\r\n\r\n<p>\r\nInstead of rushing, I\u2019ve taken a step-by-step approach: first outlining the basic GUI structure and layout, then gradually adding functionality piece by piece. This method has led to a smoother, faster, and more maintainable development experience.\r\n</p>\r\n\r\n<p>\r\nI\u2019m building this suite for myself \u2014 both as a tool I\u2019ll actually use and as a demonstration of the kinds of solutions I can create for <strong>small business owners, freelancers, and artists</strong>. Personally, project management has always been a challenge. It\u2019s easy to get distracted by the latest idea instead of staying focused on what needs to get done.\r\n</p>\r\n\r\n<p>\r\nThe posting tool is especially important to me right now. I\u2019m ready to start taking on clients and growing my business, but the consistency required to stay visible and advertise myself has been a real struggle. I often overthink my value, what I should be doing, and how to do it \u201cright.\u201d My hope is that by speeding up the content creation and publishing process, I can overcome some of that hesitation.\r\n</p>\r\n\r\n<p>\r\nI built this website myself, and I\u2019m actively expanding my Business Suite. These tools are <strong>real examples</strong> of the kind of work I can do for you.\r\n</p>\r\n\r\n<p>\r\nBeyond that, I\u2019m also in the early stages of developing <strong>Rule Beyton</strong> \u2014 a top-down 3D game about a young rogue rising through the ranks of the local thieves\u2019 guild \u2014 as well as a suite of <strong>TTRPG tools</strong> for solo players and game masters. These tools will eventually form the foundation for another game project.\r\n</p>\r\n\r\n<p><strong>Please follow my journey and share my work if you can. There\u2019s a lot more to come \u2014 and it\u2019s going to be exciting.</strong></p>\r\n",
+      "author": "Barbarossa Lives",
+      "date": "2025-07-09",
+      "category": "Industry Insights",
+      "read_time": "5 min read",
+      "image": "Projecttracker.png",
+      "tags": [
+        "FastAPI",
+        "business tools",
+        "personalized",
+        "freelance"
+      ],
+      "published": true
     }
   ],
   "categories": [
@@ -98,6 +117,10 @@
     "HTML",
     "CSS",
     "gameArt",
-    "blender"
+    "blender",
+    "FastAPI",
+    "business tools",
+    "personalized",
+    "freelance"
   ]
 }
