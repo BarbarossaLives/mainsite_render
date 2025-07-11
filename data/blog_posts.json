@@ -74,6 +74,25 @@
         "freelance"
       ],
       "published": true
+    },
+    {
+      "id": 5,
+      "title": "Next step in personalizing my buiness",
+      "slug": "next-step-in-personalizing-my-buiness",
+      "excerpt": "The next project will be a bit more of a challenge to get working the way I want it to\u2014but it's one I\u2019m really excited about.",
+      "content": "<h2>\ud83d\udcdd Blog Post: Productivity Meets Creativity</h2>\r\n\r\n<p>\r\nToday I added a <strong>CRM</strong>, <strong>expense tracker</strong>, and <strong>invoice manager</strong> to my business suite. The next project will be a bit more of a challenge to get working the way I want it to\u2014but it's one I\u2019m really excited about.\r\n</p>\r\n\r\n<p>\r\nThis one isn\u2019t about the business side of things. It\u2019s about helping <em>me</em> work\u2014specifically, helping me design and build games.\r\n</p>\r\n\r\n<p>\r\nAll game designers end up with some kind of notebook full of ideas. But turning those ideas into usable, structured game content? That\u2019s a whole different story.\r\n</p>\r\n\r\n<p>\r\nThis new set of tools will help me:\r\n<ul>\r\n  <li>Take notes</li>\r\n  <li>Structure dialog and worldbuilding</li>\r\n  <li>Build classes for items, quests, and mechanics</li>\r\n</ul>\r\nAll of it saved directly into searchable databases or JSON files.\r\n</p>\r\n\r\n<p>\r\nI also plan to hook up a local AI, like <strong>Ollama</strong>, to help me flesh out ideas, spark creativity, and even suggest blog topics.\r\n</p>\r\n\r\n<p>\r\nThe best part? I\u2019m building it <strong>exactly how I need it to work</strong>\u2014not bending myself around some generic tool. And I can keep updating it whenever I want.\r\n</p>\r\n\r\n<p>\r\nWatch for more updates on my <strong>Productivity Suite</strong> coming soon!\r\n</p>\r\n",
+      "author": "Barbarossa Lives",
+      "date": "2025-07-11",
+      "category": "Development",
+      "read_time": "5 min read",
+      "image": "BuinessSuiteFrontpage.png",
+      "tags": [
+        "FastAPI",
+        "business tools",
+        "personalized",
+        "freelance"
+      ],
+      "published": true
     }
   ],
   "categories": [
